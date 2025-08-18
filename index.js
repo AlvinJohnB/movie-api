@@ -1,8 +1,11 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-
 const mongoose = require("mongoose");
+
+const { errorHandler } = require("./middlewares/errorHandler.js");
+const userRoutes = require("./routes/userRoutes.js");
+const movieRoutes = require("./routes/movieRoutes.js");
 
 const app = express();
 app.use(cors());
@@ -15,6 +18,10 @@ mongoose
   .catch((err) => console.error("Error connecting to MongoDB:", err));
 
 //   Routes
+app.use("/users", userRoutes);
+app.use("/movies", movieRoutes);
+
+app.use(errorHandler);
 
 if (require.main === module) {
   app.listen(process.env.PORT || 3000, () => {
