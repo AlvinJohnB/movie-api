@@ -3,15 +3,25 @@ const movieController = require("../controllers/movieController.js");
 const router = express.Router();
 const { verify, verifyAdmin } = require("../middlewares/authMiddleware.js");
 
-router.post("/", verify, verifyAdmin, movieController.createMovie);
-router.patch("/:id", verify, verifyAdmin, movieController.updateMovie);
-router.delete("/:id", verify, verifyAdmin, movieController.deleteMovie);
+router.post("/addMovie", verify, verifyAdmin, movieController.createMovie);
+router.patch(
+  "/updateMovie/:id",
+  verify,
+  verifyAdmin,
+  movieController.updateMovie
+);
+router.delete(
+  "/deleteMovie/:id",
+  verify,
+  verifyAdmin,
+  movieController.deleteMovie
+);
 
-router.get("/", movieController.getAllMovies);
-router.get("/:id", movieController.getMovieById);
+router.get("/getMovies", movieController.getAllMovies);
+router.get("/getMovie/:id", movieController.getMovieById);
 
 // Comments
-router.post("/:id/comments", verify, movieController.addComment);
-router.get("/:id/comments", verify, movieController.getComments);
+router.patch("/addComment/:id", verify, movieController.addComment);
+router.get("/getComments/:id", verify, movieController.getComments);
 
 module.exports = router;

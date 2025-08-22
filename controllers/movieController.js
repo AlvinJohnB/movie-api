@@ -15,7 +15,7 @@ module.exports.createMovie = async (req, res, next) => {
       comments: [],
     });
     await movie.save();
-    res.status(201).json(movie);
+    res.status(201).send({ movie });
   } catch (error) {
     next(error);
   }
@@ -33,7 +33,9 @@ module.exports.updateMovie = async (req, res, next) => {
     if (!movie) {
       return res.status(404).json({ error: "Movie not found" });
     }
-    res.status(200).json(movie);
+    res
+      .status(200)
+      .json({ message: "Movie updated successfully", updatedMovie: movie });
   } catch (error) {
     next(error);
   }
@@ -47,7 +49,7 @@ module.exports.deleteMovie = async (req, res, next) => {
     if (!movie) {
       return res.status(404).json({ error: "Movie not found" });
     }
-    res.status(204).send();
+    res.status(200).send({ message: "Movie deleted successfully" });
   } catch (error) {
     next(error);
   }
@@ -56,7 +58,7 @@ module.exports.deleteMovie = async (req, res, next) => {
 module.exports.getAllMovies = async (req, res, next) => {
   try {
     const movies = await Movie.find();
-    res.status(200).json(movies);
+    res.status(200).json({ movies });
   } catch (error) {
     next(error);
   }
@@ -70,7 +72,7 @@ module.exports.getMovieById = async (req, res, next) => {
     if (!movie) {
       return res.status(404).json({ error: "Movie not found" });
     }
-    res.status(200).json(movie);
+    res.status(200).send({ movie });
   } catch (error) {
     next(error);
   }
@@ -95,7 +97,9 @@ module.exports.addComment = async (req, res, next) => {
     movie.comments.push({ user: userId, comment });
     await movie.save();
 
-    res.status(201).json(movie);
+    res
+      .status(201)
+      .json({ message: "Comment added successfully", updatedMovie: movie });
   } catch (error) {
     next(error);
   }
@@ -110,7 +114,7 @@ module.exports.getComments = async (req, res, next) => {
       return res.status(404).json({ error: "Movie not found" });
     }
 
-    res.status(200).json(movie.comments);
+    res.status(200).json({ comments: movie.comments });
   } catch (error) {
     next(error);
   }
